@@ -1,0 +1,49 @@
+.profile img {
+	width: 100%;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}
+
+.info a {
+	text-align: center;
+	text-decoration: none;
+	color: white;
+	background-color: gray;
+
+	padding: 10px 0px;
+	margin: 10px 0px;
+
+	border-radius: 30px;
+	width: 100%;
+}
+
+.info {
+	padding: 10px 20px;
+	display: flex;
+}
+
+.info > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.info > div:last-child {
+	padding: 0px 20px;
+	justify-content: start;
+	align-items: start;
+}
+
+.info h1 {
+	margin: 5px 0px;
+}
+
+.info p {
+	margin: 5px 0px;
+	font-size: 20px;
+}
+
+.info img {
+	width: 100%;
+}

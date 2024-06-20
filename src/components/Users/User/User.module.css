@@ -1,0 +1,17 @@
+.user {
+	padding: 10px;
+	border-bottom: 1px solid #1d1d1d;
+}
+
+.user a {
+	text-decoration: none;
+	color: white;
+}
+
+.user button {
+	border: none;
+	color: white;
+	background-color: #313131;
+	padding: 0px;
+	font-size: 14px;
+}

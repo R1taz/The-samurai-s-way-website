@@ -1,0 +1,22 @@
+.post {
+	display: grid;
+	grid-template-columns: 100px 200px;
+	background-color: gray;
+	margin: 10px 0px;
+	padding: 5px;
+	border-radius: 30px;
+}
+
+.post img {
+	width: 80%;
+	border-radius: 30px;
+	grid-area: 1 / 1 / 3 / 2;
+}
+
+.userName {
+	grid-area: 1 / 2 / 2 / 3;
+}
+
+.userText {
+	grid-area: 2 / 2 / 3 / 3;
+}

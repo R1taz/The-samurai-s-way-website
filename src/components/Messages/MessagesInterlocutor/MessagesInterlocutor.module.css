@@ -1,0 +1,55 @@
+.userMessage,
+.guestMessage {
+	border-radius: 30px;
+	padding: 15px 25px;
+	font-size: 20px;
+	margin: 10px 0px;
+
+	display: grid;
+	grid-template-columns: 100px 200px;
+}
+
+.userMessage {
+	background-color: rgb(100, 206, 100);
+}
+
+.guestMessage {
+	background-color: gray;
+}
+
+.userMessage img,
+.guestMessage img {
+	width: 80%;
+	grid-area: 1 / 1 / 3 / 2;
+}
+
+.messageName {
+	grid-area: 1 / 2 / 2 / 3;
+}
+
+.messageText {
+	grid-area: 2 / 2 / 3 / 3;
+}
+
+.sendMsg {
+	font-size: 18px;
+	border-radius: 30px;
+	border: none;
+	padding: 10px 25px;
+	margin: 0px 10px 0px 0px;
+}
+
+.backBtn {
+	text-decoration: none;
+	color: white;
+	display: inline-block;
+	margin: 35px 0px 20px 0px;
+	background-color: skyblue;
+	border-radius: 30px;
+	font-size: 18px;
+	padding: 15px 25px;
+}
+
+.backBtn:first-child {
+	margin-top: 0px;
+}

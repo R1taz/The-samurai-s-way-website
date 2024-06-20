@@ -1,0 +1,88 @@
+.info {
+	padding: 10px 10px;
+	display: flex;
+}
+
+.info > div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.info > div:first-child input {
+	margin-top: 10px;
+}
+
+.info > div:last-child {
+	padding: 0px 30px;
+	align-items: start;
+}
+
+.info > div:last-child div:not(:first-child) {
+	margin-top: 20px;
+}
+
+.info p {
+	display: inline;
+	margin-right: 5px;
+	font-size: 20px;
+}
+
+.info img {
+	width: 100%;
+}
+
+.info input {
+	padding: 15px;
+	border: none;
+	border-radius: 20px;
+
+	background-color: gray;
+	color: white;
+
+	font-size: 16px;
+	cursor: default;
+}
+
+.info textarea {
+	width: 250px;
+	height: 100px;
+	padding: 15px;
+	border: none;
+	border-radius: 20px;
+
+	background-color: gray;
+	color: white;
+
+	word-wrap: normal;
+	font-size: 16px;
+	cursor: default;
+	resize: none;
+}
+
+.info select {
+	padding: 15px;
+	border: none;
+	border-radius: 20px;
+
+	background-color: gray;
+	color: white;
+
+	font-size: 16px;
+	cursor: default;
+}
+
+.info .save {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.info .save button {
+	padding: 15px;
+	width: 100%;
+	border: none;
+	border-radius: 20px;
+
+	background-color: gray;
+	color: white;
+}
