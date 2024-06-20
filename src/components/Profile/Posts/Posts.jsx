@@ -3,7 +3,6 @@ import Post from './Post/Post'
 import style from './Posts.module.css'
 
 const Posts = memo(props => {
-	console.log('render posts')
 	let postsElem = props.posts.map(post => {
 		return (
 			<Post

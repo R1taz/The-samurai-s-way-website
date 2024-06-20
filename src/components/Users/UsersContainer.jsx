@@ -8,7 +8,6 @@ import {
 import { getUsersSelector } from '../../redux/selectors'
 
 const mapStateToProps = state => {
-	console.log('mstp')
 	return {
 		totalUsersCount: state.usersPage.totalUsersCount,
 		usersInPageCount: state.usersPage.usersInPageCount,
