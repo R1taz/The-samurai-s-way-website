@@ -3,7 +3,7 @@ import {
 	getUserProfile,
 	updateProfile,
 	updateUserPhoto,
-} from '../../redux/profileReducer'
+} from '../../redux/profileReducer.ts'
 import ProfileEdit from './ProfileEdit'
 import { useEffect } from 'react'
 import { getUserAuthorizedId } from '../../redux/selectors'

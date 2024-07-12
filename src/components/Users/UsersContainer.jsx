@@ -4,7 +4,7 @@ import {
 	changeCurrentPage,
 	getUsers,
 	toggleSubscribe,
-} from '../../redux/usersReducer'
+} from '../../redux/usersReducer.ts'
 import { getUsersSelector } from '../../redux/selectors'
 
 const mapStateToProps = state => {

@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import profileReducer from './profileReducer'
-import authReducer from './authReducer'
-import usersReducer from './usersReducer'
-import messagesReducer from './messagesReducer'
-import navbarReducer from './navbarReducer'
-import appReducer from './appReducer'
+import profileReducer from './profileReducer.ts'
+import authReducer from './authReducer.ts'
+import usersReducer from './usersReducer.ts'
+import messagesReducer from './messagesReducer.ts'
+import navbarReducer from './navbarReducer.ts'
+import appReducer from './appReducer.ts'
 
 const rootReducer = combineReducers({
 	app: appReducer,

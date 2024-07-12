@@ -1,4 +1,5 @@
 import { usersAPI } from '../api/api'
+import { userType } from '../types/types.ts'
 
 const SET_USERS = 'setUsers'
 const SET_TOTAL_USERS_COUNT = 'setTotalUsersCount'
@@ -7,15 +8,17 @@ const TOGGLE_SUBSCRIBING_IN_PROGRESS = 'toggleSubscribingInProgress'
 const CHANGE_CURRENT_PAGE = 'changeCurrentPage'
 
 const initialState = {
-	users: [],
+	users: [] as userType[],
 	totalUsersCount: 0,
 	usersInPageCount: 10,
 	pagesInPortionCount: 10,
 	currentPage: 1,
-	subscribingInProgress: [],
+	subscribingInProgress: [] as number[], // array of users ids
 }
 
-const usersReducer = (state = initialState, action) => {
+export type initialStateType = typeof initialState
+
+const usersReducer = (state = initialState, action: any): initialStateType => {
 	switch (action.type) {
 		case CHANGE_CURRENT_PAGE:
 			return { ...state, currentPage: action.page }
@@ -53,26 +56,63 @@ const usersReducer = (state = initialState, action) => {
 
 export default usersReducer
 
-const setUsers = users => ({ type: SET_USERS, users })
-const setTotalUsersCount = totalCount => ({
+type setUsersType = {
+	type: typeof SET_USERS
+	users: userType[]
+}
+const setUsers = (users: userType[]): setUsersType => ({
+	type: SET_USERS,
+	users,
+})
+
+type setTotalUsersCountType = {
+	type: typeof SET_TOTAL_USERS_COUNT
+	totalCount: number
+}
+const setTotalUsersCount = (totalCount: number): setTotalUsersCountType => ({
 	type: SET_TOTAL_USERS_COUNT,
 	totalCount,
 })
-const toggleUserSubscribe = (id, toggle) => ({
+
+type toggleUserSubscribeType = {
+	type: typeof TOGGLE_USER_SUBSCRIBE
+	id: number
+	toggle: boolean
+}
+const toggleUserSubscribe = (
+	id: number,
+	toggle: boolean
+): toggleUserSubscribeType => ({
 	type: TOGGLE_USER_SUBSCRIBE,
 	id,
 	toggle,
 })
-const toggleSubscribingInProgress = (id, isFetching) => ({
+
+type toggleSubscribingInProgressType = {
+	type: typeof TOGGLE_SUBSCRIBING_IN_PROGRESS
+	id: number
+	isFetching: boolean
+}
+const toggleSubscribingInProgress = (
+	id: number,
+	isFetching: boolean
+): toggleSubscribingInProgressType => ({
 	type: TOGGLE_SUBSCRIBING_IN_PROGRESS,
 	id,
 	isFetching,
 })
 
-export const changeCurrentPage = page => ({ type: CHANGE_CURRENT_PAGE, page })
+type changeCurrentPageType = {
+	type: typeof CHANGE_CURRENT_PAGE
+	page: number
+}
+export const changeCurrentPage = (page: number): changeCurrentPageType => ({
+	type: CHANGE_CURRENT_PAGE,
+	page,
+})
 
-export const getUsers = page => {
-	return async (dispatch, getState) => {
+export const getUsers = (page: number) => {
+	return async (dispatch: any, getState: any) => {
 		const response = await usersAPI.getUsersData(
 			getState().usersPage.usersInPageCount,
 			page
@@ -84,10 +124,9 @@ export const getUsers = page => {
 	}
 }
 
-export const toggleSubscribe = (id, toggle) => {
-	return async dispatch => {
+export const toggleSubscribe = (id: number, toggle: boolean) => {
+	return async (dispatch: any) => {
 		dispatch(toggleSubscribingInProgress(id, true))
-
 		try {
 			const response = toggle
 				? await usersAPI.follow(id)

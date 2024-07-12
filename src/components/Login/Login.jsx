@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
-import loginFormSchema from '../../../validate/loginFormSchema'
+import loginFormSchema from '../../validate/loginFormSchema'
 
 function Login(props) {
 	return (

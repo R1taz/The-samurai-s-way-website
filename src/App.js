@@ -2,12 +2,12 @@ import React, { Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 
-import HeaderContainer from './components/Header/HeaderContainer'
-import LoginContainer from './components/Header/Login/LoginContainer'
+import Header from './components/Header/Header.tsx'
+import LoginContainer from './components/Login/LoginContainer.jsx'
 import ProfileContainer from './components/Profile/ProfileContainer'
 import ProfileEditContainer from './components/ProfileEdit/ProfileEditContainer'
 
-import { authorized } from './redux/authReducer'
+import { authorized } from './redux/authReducer.ts'
 import { connect } from 'react-redux'
 
 import MessagesContainer from './components/Messages/MessagesContainer'
@@ -35,7 +35,7 @@ function App(props) {
 				</div>
 			)}
 
-			<HeaderContainer />
+			<Header />
 			<div className='main'>
 				<NavbarContainer />
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import { friendsType } from '../types/types.ts'
 
 const initialState = {
 	friends: [
@@ -15,10 +15,12 @@ const initialState = {
 			urlPhoto: 'https://a.d-cd.net/SD-HkhT2I0X_yHAkFLjtisQzt50-1920.jpg',
 			isOnline: false,
 		},
-	],
+	] as friendsType[],
 }
 
-function navbarReducer(state = initialState, action) {
+export type initialStateType = typeof initialState
+
+function navbarReducer(state = initialState, action: any): initialStateType {
 	switch (action.type) {
 		default:
 			return state

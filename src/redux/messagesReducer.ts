@@ -1,4 +1,5 @@
 import userPhoto from '../assets/user.png'
+import { interlocutorType, messagesInterlocutorsType } from '../types/types.ts'
 const SEND_MESSAGE = 'sendMessage'
 
 const initialState = {
@@ -6,7 +7,7 @@ const initialState = {
 		{ id: 1, userName: 'User 1' },
 		{ id: 2, userName: 'User 2' },
 		{ id: 3, userName: 'User 3' },
-	],
+	] as interlocutorType[],
 	messagesInterlocutors: [
 		{
 			id: 1,
@@ -44,10 +45,15 @@ const initialState = {
 			urlPhoto: 'https://forum.smotrarage.ru/data/avatars/l/0/1.jpg?1652301890',
 			text: 'message 6',
 		},
-	],
+	] as messagesInterlocutorsType[],
 }
 
-const messagesReducer = (state = initialState, action) => {
+export type initialStateType = typeof initialState
+
+const messagesReducer = (
+	state = initialState,
+	action: any
+): initialStateType => {
 	switch (action.type) {
 		case SEND_MESSAGE:
 			return {
@@ -68,7 +74,20 @@ const messagesReducer = (state = initialState, action) => {
 	}
 }
 
-export const sendMessage = (id, userName, urlPhoto, text) => ({
+type sendMessageType = {
+	type: typeof SEND_MESSAGE
+	id: string
+	userName: string
+	urlPhoto: any
+	text: string
+}
+
+export const sendMessage = (
+	id: string,
+	userName: string,
+	urlPhoto: any,
+	text: string
+): sendMessageType => ({
 	type: SEND_MESSAGE,
 	id,
 	userName,

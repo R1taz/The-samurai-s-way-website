@@ -6,7 +6,7 @@ import {
 	getUserProfile,
 	getUserStatus,
 	updateUserStatus,
-} from '../../redux/profileReducer'
+} from '../../redux/profileReducer.ts'
 import { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getPosts, getUserAuthorizedId } from '../../redux/selectors'

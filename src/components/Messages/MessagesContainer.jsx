@@ -3,7 +3,7 @@ import Messages from './Messages'
 import withAuthRedirect from '../../hocs/withAuthRedirect'
 import { compose } from '@reduxjs/toolkit'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { sendMessage } from '../../redux/messagesReducer'
+import { sendMessage } from '../../redux/messagesReducer.ts'
 
 const MessagesContainer = props => {
 	let messagesId

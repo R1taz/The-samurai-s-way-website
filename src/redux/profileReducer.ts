@@ -1,5 +1,6 @@
-import { profileAPI } from '../api/api'
-import { deleteErrorDialogBox, setErrorDialogBox } from './appReducer'
+import { profileAPI } from '../api/api.js'
+import { deleteErrorDialogBox, setErrorDialogBox } from './appReducer.ts'
+import { postsType, profileType, profilePhotosType } from '../types/types.ts'
 
 const SET_USER_PROFILE = 'setUserProfile'
 const SET_USER_STATUS = 'setUserStatus'
@@ -29,12 +30,17 @@ const initialState = {
 				'https://www.meme-arsenal.com/memes/2f5bee962a2f9e086cda4a4d4d784dec.jpg',
 			text: 'message 3',
 		},
-	],
-	profile: null,
+	] as postsType[],
+	profile: null as profileType | null,
 	status: '',
 }
 
-const profileReducer = (state = initialState, action) => {
+export type initialStateType = typeof initialState
+
+const profileReducer = (
+	state = initialState,
+	action: any
+): initialStateType => {
 	switch (action.type) {
 		case SET_USER_PROFILE:
 			return { ...state, profile: { ...action.profile } }
@@ -43,14 +49,17 @@ const profileReducer = (state = initialState, action) => {
 			return { ...state, status: action.status }
 
 		case SET_USER_PHOTO:
-			return { ...state, profile: { ...state.profile, photos: action.photos } }
+			return {
+				...state,
+				profile: { ...state.profile, photos: action.photos } as profileType,
+			}
 
 		case UPDATE_USER_PROFILE:
 			return {
 				...state,
 				profile: {
 					...action.profile,
-					photos: { ...state.profile.photos },
+					photos: { ...state.profile?.photos },
 				},
 			}
 
@@ -61,30 +70,58 @@ const profileReducer = (state = initialState, action) => {
 
 export default profileReducer
 
-const updateUserProfile = profile => ({
+type updateUserProfileType = {
+	type: typeof UPDATE_USER_PROFILE
+	profile: profileType
+}
+const updateUserProfile = (profile: profileType): updateUserProfileType => ({
 	type: UPDATE_USER_PROFILE,
 	profile,
 })
-const setUserProfile = profile => ({ type: SET_USER_PROFILE, profile })
-const setUserStatus = status => ({ type: SET_USER_STATUS, status })
-const setUserPhoto = photos => ({ type: SET_USER_PHOTO, photos })
 
-export const getUserProfile = userId => {
-	return async dispatch => {
+type setUserProfileType = {
+	type: typeof SET_USER_PROFILE
+	profile: profileType
+}
+const setUserProfile = (profile: profileType): setUserProfileType => ({
+	type: SET_USER_PROFILE,
+	profile,
+})
+
+type setUserStatusType = {
+	type: typeof SET_USER_STATUS
+	status: string
+}
+const setUserStatus = (status: string): setUserStatusType => ({
+	type: SET_USER_STATUS,
+	status,
+})
+
+type setUserPhotoType = {
+	type: typeof SET_USER_PHOTO
+	photos: profilePhotosType
+}
+const setUserPhoto = (photos: profilePhotosType): setUserPhotoType => ({
+	type: SET_USER_PHOTO,
+	photos,
+})
+
+export const getUserProfile = (userId: number) => {
+	return async (dispatch: any) => {
 		const response = await profileAPI.getProfile(userId)
 		dispatch(setUserProfile(response))
 	}
 }
 
-export const getUserStatus = userId => {
-	return async dispatch => {
+export const getUserStatus = (userId: number) => {
+	return async (dispatch: any) => {
 		const response = await profileAPI.getStatus(userId)
 		dispatch(setUserStatus(response))
 	}
 }
 
-export const updateUserStatus = status => {
-	return async dispatch => {
+export const updateUserStatus = (status: string) => {
+	return async (dispatch: any) => {
 		try {
 			const response = await profileAPI.updateStatus(status)
 			if (response.resultCode !== 0) return
@@ -96,16 +133,16 @@ export const updateUserStatus = status => {
 	}
 }
 
-export const updateUserPhoto = file => {
-	return async dispatch => {
+export const updateUserPhoto = (file: any) => {
+	return async (dispatch: any) => {
 		const response = await profileAPI.updatePhoto(file)
 		if (response.resultCode !== 0) return
 		dispatch(setUserPhoto(response.data.photos))
 	}
 }
 
-export const updateProfile = profile => {
-	return async dispatch => {
+export const updateProfile = (profile: profileType) => {
+	return async (dispatch: any) => {
 		const response = await profileAPI.updateProfile(profile)
 		if (response.resultCode !== 0) return
 		dispatch(updateUserProfile(profile))
