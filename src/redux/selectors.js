@@ -1,12 +1,7 @@
 import { createSelector } from 'reselect'
 
-export const getUserAuthorizedId = state => {
-	return state.auth.id
-}
-
-export const getUserAuthorizedIsAuth = state => {
-	return state.auth.isAuth
-}
+export const getUserAuthorizedId = state => state.auth.id
+export const getUserAuthorizedIsAuth = state => state.auth.isAuth
 
 export const getPosts = createSelector(
 	state => state.profilePage.posts,

@@ -1,17 +1,16 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { getUserAuthorizedIsAuth } from '../redux/selectors'
-
-const mstp = state => ({ isAuth: getUserAuthorizedIsAuth(state) })
+import { useAppSelector } from '../hooks/react-redux-hooks.ts'
 
 const withAuthRedirect = Component => {
 	const ComponentWithAuth = props => {
-		if (!props.isAuth) return <Navigate to='/login' />
+		const isAuth = useAppSelector(state => getUserAuthorizedIsAuth(state))
+		if (!isAuth) return <Navigate to='/login' />
 		return <Component {...props} />
 	}
 
-	return connect(mstp)(ComponentWithAuth)
+	return ComponentWithAuth
 }
 
 export default withAuthRedirect
