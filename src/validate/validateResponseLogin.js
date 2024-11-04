@@ -1,4 +1,6 @@
-export default async function validateResponseLogin(response, resultCode, setErrors) {
+export default async function validateResponseLogin(response, setErrors) {
+	const resultCode = response.resultCode
+
 	if (response.fieldsErrors.length === 0) {
 		setErrors({ globalError: response.messages[0] })
 	}

@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { FriendType } from '../interfaces'
+import { IFriend } from '../../interfaces'
 
-type NavbarStateType = {
-	friends: FriendType[]
+interface State {
+	friends: IFriend[]
 }
 
-const initialState: NavbarStateType = {
+const initialState: State = {
 	friends: [
 		{
 			id: 1,

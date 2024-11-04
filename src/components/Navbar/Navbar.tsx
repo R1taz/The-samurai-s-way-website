@@ -1,23 +1,20 @@
 import React from 'react'
 import style from './Navbar.module.css'
 import { NavLink } from 'react-router-dom'
-import { useAppSelector } from '../../hooks/react-redux-hooks.ts'
+import { useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
+import Friend from './Friend/Friend.tsx'
+
+type NavLinkClassProps = { isActive: boolean }
 
 function Navbar() {
 	const friends = useAppSelector(state => state.navbar.friends)
 
-	const isActiveLink = (props: { isActive: boolean }) => {
-		if (props.isActive) return style.activeLink
+	const isActiveLink = (props: NavLinkClassProps): string => {
+		return props.isActive ? style.activeLink : ''
 	}
 
 	let friendsElem = friends.map(friend => {
-		return (
-			<div className={style.friend}>
-				<img src={friend.urlPhoto} />
-				<p className={style.userName}>{friend.userName}</p>
-				<div className={friend.isOnline ? style.online : style.offline}></div>
-			</div>
-		)
+		return <Friend key={friend.id} {...friend} />
 	})
 
 	return (

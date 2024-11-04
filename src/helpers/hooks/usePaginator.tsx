@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getUsers, changeCurrentPage } from '../redux/usersSlice.ts'
+import { changeCurrentPage } from '../../redux/slices/usersSlice.ts'
 import { useAppDispatch, useAppSelector } from '../hooks/react-redux-hooks.ts'
 
 export const usePaginator = (currentPage: number) => {
@@ -23,7 +23,6 @@ export const usePaginator = (currentPage: number) => {
 			<button
 				onClick={() => {
 					dispatch(changeCurrentPage(i))
-					dispatch(getUsers(i))
 				}}
 				style={{
 					fontWeight: currentPage === i ? 'bold' : undefined,

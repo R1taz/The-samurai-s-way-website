@@ -1,0 +1,8 @@
+.notFound a {
+	text-decoration: none;
+	color: white;
+}
+
+.notFound a:hover {
+	color: skyblue;
+}

@@ -1,14 +1,14 @@
 import React from 'react'
 import style from './Post.module.css'
 
-interface Props {
-	key: number
-	userName: string
-	urlPhoto: string
+interface PostProps {
+	id: number
 	text: string
+	urlPhoto: string
+	userName: string
 }
 
-function Post(props: Props) {
+function Post(props: PostProps) {
 	return (
 		<div className={style.post}>
 			<img src={props.urlPhoto} />

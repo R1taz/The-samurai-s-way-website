@@ -1,51 +1,37 @@
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import ProfileInfo from './ProfileInfo/ProfileInfo.tsx'
 import Posts from './Posts/Posts.tsx'
-import { useAppDispatch, useAppSelector } from '../../hooks/react-redux-hooks.ts'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import withAuthRedirect from '../../hocs/withAuthRedirect'
-import { getUserProfile, getUserStatus } from '../../redux/profileSlice.ts'
-import { useAuthRedirect } from '../../hooks/useAuthRedirect.tsx'
+import { useAppDispatch, useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
+import { useParams } from 'react-router-dom'
+import { useGetProfileQuery } from '../../redux/services/profileApi.ts'
+import { getUserProfile } from '../../redux/slices/profileSlice.ts'
+import useRedirect from '../../helpers/hooks/useRedirect.tsx'
 
-interface Props {
-	router: {
-		params: {
-			userId?: string
-		}
-	}
-	isAuth: boolean
-}
+const Profile = () => {
+	const { urlId } = useParams()
 
-function Profile(props: Props) {
 	const profile = useAppSelector(state => state.profilePage.profile)
-	const id = useAppSelector(state => state.auth.id)
+	const profileId = useAppSelector(state => state.auth.id)
 	const dispatch = useAppDispatch()
 
-	let userId = id!
-	if (props.router.params.userId) userId = Number(props.router.params.userId)
+	const userId = urlId ? Number(urlId) : profileId!
 
-	useEffect(() => {
-		dispatch(getUserProfile(userId))
-		dispatch(getUserStatus(userId))
-	}, [userId, dispatch])
+	const { data: dataProfile } = useGetProfileQuery(userId)
+	if (dataProfile && JSON.stringify(dataProfile) !== JSON.stringify(profile)) {
+		dispatch(getUserProfile(dataProfile!))
+	}
+
+	const redirect = useRedirect()
+	if (redirect) return redirect
 
 	if (!profile) return <div>loading</div>
 
 	return (
 		<div>
-			<ProfileInfo isOwner={!props.router.params.userId} profile={profile} />
+			<ProfileInfo userId={userId} isOwner={!urlId} profile={profile} />
 			<Posts />
 		</div>
 	)
 }
 
-export default withAuthRedirect(withRouter(Profile))
-
-function withRouter(Component) {
-	return props => {
-		let location = useLocation()
-		let params = useParams()
-		let navigate = useNavigate()
-		return <Component {...props} router={{ location, params, navigate }} />
-	}
-}
+export default Profile

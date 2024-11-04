@@ -1,97 +1,75 @@
-export type ErrorDialogBoxType = {
-	title: string
-	messageError: string
-	statusCode: string
-}
+// For Component
 
-export interface ProfileType {
-	aboutMe: null | string
-	contacts: ContactsProfile
-	fullName: string
-	lookingForAJob: boolean
-	lookingForAJobDescription: null | string
-	photos: PhotosProfileType
+// For RTK
+
+export interface IProfile {
 	userId: number
+	aboutMe?: string | null
+	lookingForAJob: boolean
+	lookingForAJobDescription: string
+	fullName: string
+	contacts: IProfileContacts
+	photos: IProfilePhotos
 }
+export interface IProfilePhotos {
+	small: string | null
+	large: string | null
+}
+export type IProfileContacts = Record<
+	'github' | 'vk' | 'facebook' | 'instagram' | 'twitter' | 'website' | 'youtube' | 'mainLink',
+	string
+>
 
-export interface PhotosProfileType {
-	large: null | string
-	small: null | string
-}
-
-export interface PostType {
-	id: number
-	userName: string
-	urlPhoto: string
-	text: string
-}
-
-export interface ContactsProfile {
-	facebook: null | string
-	github: null | string
-	instagram: null | string
-	mainLink: null | string
-	twitter: null | string
-	vk: null | string
-	website: null | string
-	youtube: null | string
-}
-
-export type PairOfContacts = [string, string | null]
-
-export interface ContactUser {
-	[key: string]: string
-}
-
-export type InterlocutorType = {
-	id: number
-	userName: string
-}
-export type MessagesInterlocutorType = {
-	id: number
-	userName: string
-	urlPhoto: string
-	text: string
-}
-export type FriendType = {
-	id: number
-	userName: string
-	urlPhoto: string
-	isOnline: boolean
-}
-export type UserType = {
-	followed: boolean
+export interface IUser {
 	id: number
 	name: string
-	photos: PhotosProfileType
-	status: null | string
-	uniqueUrlName: null
-}
-export type LoginDataType = {
-	email: string
-	password: string
-	rememberMe: boolean
-	captcha: string
-	setErrors: Function
+	status: string
+	photos: IProfilePhotos
+	followed: boolean
 }
 
-export type GetUsersType = {
-	totalCount: number
-	items: UserType[]
-	error: Object | null
-}
-export type ToggleSubscribeType = {
-	id: number
-	toggle: boolean
-}
-export type AuthorizedActionType = {
+export interface IUserData {
 	id: number
 	login: string
 	email: string
 }
-export type SendMessageActionType = {
+
+export interface IDataUserMessage {
 	id: number
 	userName: string
 	urlPhoto: string
 	text: string
+}
+export interface IInterlocutor {
+	id: number
+	userName: string
+}
+
+export type IFriend = Omit<IDataUserMessage, 'text'> & { isOnline: boolean }
+
+// For RTKQuery API
+
+export interface ILoginData {
+	email: string
+	password: string
+	rememberMe: boolean
+	captcha: string
+	globalError: string
+}
+export interface IResponseUserData {
+	data: IUserData
+	fieldsErrors: string[]
+	messages: string[]
+	resultCode: number
+}
+
+export interface IResponseGetUsers {
+	items: IUser[]
+	totalCount: number
+	error: null | Error
+}
+
+export interface IToggleSubscribe {
+	id: number
+	toggle: boolean
 }

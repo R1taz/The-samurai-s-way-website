@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import style from './Users.module.css'
 import User from './User/User.tsx'
 import Paginator from './Paginator/Paginator.tsx'
-import { getUsers } from '../../redux/usersSlice.ts'
-import { useAppDispatch, useAppSelector } from '../../hooks/react-redux-hooks.ts'
+import { useAppDispatch, useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
+import { useGetUsersQuery } from '../../redux/services/usersApi.ts'
+import { getUsersData } from '../../redux/slices/usersSlice.ts'
 
 function Users() {
 	const currentPage = useAppSelector(state => state.usersPage.currentPage)
 	const users = useAppSelector(state => state.usersPage.users)
+	const pageCount = useAppSelector(state => state.usersPage.usersInPageCount)
 	const dispatch = useAppDispatch()
 
-	useEffect(() => {
-		if (users.length !== 0) return
-		dispatch(getUsers(currentPage))
-	}, [dispatch])
+	const { data: dataUsers } = useGetUsersQuery({ pageCount, currentPage })
+
+	if (dataUsers && JSON.stringify(dataUsers) !== JSON.stringify(users)) {
+		dispatch(getUsersData(dataUsers!))
+	}
 
 	if (users.length === 0) return <div>loading</div>
 

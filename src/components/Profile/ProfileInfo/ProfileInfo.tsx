@@ -4,14 +4,15 @@ import ProfileStatus from './ProfileStatus/ProfileStatus.tsx'
 import ProfileContacts from './ProfileContacts/ProfileContacts.tsx'
 import userPhoto from '../../../assets/user.png'
 import { NavLink } from 'react-router-dom'
-import { ProfileType } from '../../../interfaces'
+import { IProfile } from '../../../interfaces/index.ts'
 
-interface Props {
+export interface ProfileInfoProps {
+	userId: number
 	isOwner: boolean
-	profile: ProfileType
+	profile: IProfile
 }
 
-const ProfileInfo = (props: Props) => {
+const ProfileInfo = (props: ProfileInfoProps) => {
 	return (
 		<div className={style.profile}>
 			<img
@@ -30,7 +31,7 @@ const ProfileInfo = (props: Props) => {
 						<h1>{props.profile.fullName}</h1>
 					</div>
 
-					<ProfileStatus isOwner={props.isOwner} />
+					<ProfileStatus userId={props.userId} isOwner={props.isOwner} />
 					<ProfileContacts contacts={props.profile.contacts} />
 
 					<p>Поиск работы: {props.profile.lookingForAJob ? 'В активном поиске' : 'Не ищу'}</p>

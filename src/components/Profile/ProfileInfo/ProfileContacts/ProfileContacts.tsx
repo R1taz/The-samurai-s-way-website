@@ -1,23 +1,25 @@
 import React, { memo, useState } from 'react'
 import style from './ProfileContacts.module.css'
-import { ContactsProfile, ContactUser, PairOfContacts } from '../../../../interfaces'
+import { IProfileContacts } from '../../../../interfaces'
 
-interface Props {
-	contacts: ContactsProfile
+interface ProfileContacs {
+	contacts: IProfileContacts
 }
 
-const ProfileContacts = memo((props: Props) => {
+const ProfileContacts = memo((props: ProfileContacs) => {
 	const [showContacts, setShowContacts] = useState(false)
 
-	let contactsUser: ContactUser[] = []
-
-	let [contact, value]: PairOfContacts = ['', null]
-
-	for ([contact, value] of Object.entries(props.contacts)) {
-		if (value !== null && value !== '') contactsUser.push({ [contact]: value })
+	type socialNetworkType = {
+		[key: string]: string
 	}
 
-	let contactsElems = contactsUser.map(item => (
+	let socialNetworks: socialNetworkType[] = []
+
+	for (let key in props.contacts) {
+		if (props.contacts[key]) socialNetworks.push({ [key]: props.contacts[key] })
+	}
+
+	let contactsElems = socialNetworks.map(item => (
 		<p>
 			{Object.keys(item)}: {Object.values(item)}
 		</p>

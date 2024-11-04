@@ -2,25 +2,48 @@ import React from 'react'
 import style from './ProfileEdit.module.css'
 import userPhoto from '../../assets/user.png'
 import { Field, Form, Formik } from 'formik'
-import { useAppDispatch, useAppSelector } from '../../hooks/react-redux-hooks.ts'
-import { useEffect } from 'react'
-import { getUserProfile, updateProfile, updateUserPhoto } from '../../redux/profileSlice.ts'
+import { useAppDispatch, useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
+import {
+	useGetProfileQuery,
+	useUpdatePhotoMutation,
+	useUpdateProfileMutation,
+} from '../../redux/services/profileApi.ts'
+import { getUserProfile, updateUserPhoto, updateUserProfile } from '../../redux/slices/profileSlice.ts'
+import useRedirect from '../../helpers/hooks/useRedirect.tsx'
 
 const ProfileEdit = () => {
 	const profile = useAppSelector(state => state.profilePage.profile)
 	const id = useAppSelector(state => state.auth.id)
 	const dispatch = useAppDispatch()
 
-	useEffect(() => {
-		if (!profile) dispatch(getUserProfile(id!))
-	}, [dispatch])
+	const [updateProfile] = useUpdateProfileMutation()
+	const [updatePhoto] = useUpdatePhotoMutation()
+
+	const { data: dataProfile } = useGetProfileQuery(id!)
+	if (dataProfile && JSON.stringify(dataProfile) !== JSON.stringify(profile)) {
+		dispatch(getUserProfile(dataProfile!))
+	}
+
+	const redirect = useRedirect()
+	if (redirect) return redirect
 
 	if (!profile) return <div>loading</div>
 
-	const onMainPhotoSelected = event => {
-		if (event.target.files.length) {
-			dispatch(updateUserPhoto(event.target.files[0]))
+	const onMainPhotoSelected: React.ChangeEventHandler<HTMLInputElement> = async event => {
+		if (event.target.files && event.target.files.length) {
+			const data = await updatePhoto(event.target.files).unwrap()
+			dispatch(updateUserPhoto(data!))
 		}
+	}
+
+	type socialNetworkType = {
+		[key: string]: string
+	}
+
+	const socialNetworks: socialNetworkType[] = []
+
+	for (let key in profile.contacts) {
+		socialNetworks.push({ [key]: profile.contacts[key] || '' })
 	}
 
 	return (
@@ -35,8 +58,8 @@ const ProfileEdit = () => {
 					initialValues={{
 						fullName: profile.fullName,
 						aboutMe: profile.aboutMe,
-						search: profile.lookingForAJob ? 'true' : 'false',
-						descriptionJob: profile.lookingForAJobDescription,
+						lookingForAJob: profile.lookingForAJob ? 'true' : 'false',
+						lookingForAJobDescription: profile.lookingForAJobDescription,
 						facebook: profile.contacts.facebook,
 						github: profile.contacts.github,
 						instagram: profile.contacts.instagram,
@@ -47,26 +70,25 @@ const ProfileEdit = () => {
 						youtube: profile.contacts.youtube,
 					}}
 					/* validationSchema={} */
-					onSubmit={(values, { setSubmitting }) => {
-						dispatch(
-							updateProfile({
-								userId: id!,
-								fullName: values.fullName,
-								aboutMe: values.aboutMe,
-								search: values.search === 'true' ? true : false,
-								descriptionJob: values.descriptionJob,
-								contacts: {
-									facebook: values.facebook,
-									github: values.github,
-									instagram: values.instagram,
-									mainLink: values.mainLink,
-									twitter: values.twitter,
-									vk: values.vk,
-									website: values.website,
-									youtube: values.youtube,
-								},
-							})
-						)
+					onSubmit={async (values, { setSubmitting }) => {
+						const newProfileData = await updateProfile({
+							userId: id!,
+							fullName: values.fullName,
+							aboutMe: values.aboutMe,
+							lookingForAJob: values.lookingForAJob === 'true' ? true : false,
+							lookingForAJobDescription: values.lookingForAJobDescription,
+							contacts: {
+								facebook: values.facebook,
+								github: values.github,
+								instagram: values.instagram,
+								mainLink: values.mainLink,
+								twitter: values.twitter,
+								vk: values.vk,
+								website: values.website,
+								youtube: values.youtube,
+							},
+						}).unwrap()
+						dispatch(updateUserProfile(newProfileData!))
 
 						setSubmitting(false)
 					}}
@@ -80,7 +102,11 @@ const ProfileEdit = () => {
 
 							<div>
 								<p>Описание: </p>
-								<textarea name='aboutMe' value={values.aboutMe} onChange={handleChange}></textarea>
+								<textarea
+									name='aboutMe'
+									value={values.aboutMe ? values.aboutMe : ''}
+									onChange={handleChange}
+								></textarea>
 							</div>
 
 							<div>
@@ -90,24 +116,37 @@ const ProfileEdit = () => {
 
 								<div>
 									<p>В активном поиске</p>
-									<Field type='radio' value='true' checked={values.search === 'true'} name='search' />
+									<Field type='radio' value='true' checked={values.lookingForAJob === 'true'} name='lookingForAJob' />
 								</div>
 
 								<div>
 									<p>Не ищу</p>
-									<Field type='radio' value='false' checked={values.search === 'false'} name='search' />
+									<Field type='radio' value='false' checked={values.lookingForAJob === 'false'} name='lookingForAJob' />
 								</div>
 							</div>
 
-							{values.search === 'true' && (
+							{values.lookingForAJob === 'true' && (
 								<div>
 									<p>Описание резюме</p>
-									<textarea name='descriptionJob' value={values.descriptionJob} onChange={handleChange}></textarea>
+									<textarea
+										name='lookingForAJobDescription'
+										value={values.lookingForAJobDescription}
+										onChange={handleChange}
+									></textarea>
 								</div>
 							)}
 
 							<div>
 								<p>Контакты</p>
+								{/* { где то накосячил в коде } */}
+								{/* {socialNetworks.map(item => {
+									return (
+										<div>
+											<p>{Object.keys(item)}</p>
+											<Field name={Object.keys(item)} type='text' />
+										</div>
+									)
+								})} */}
 
 								<div>
 									<p>facebook: </p>

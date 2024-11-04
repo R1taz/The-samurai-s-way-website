@@ -1,20 +1,30 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import loginFormSchema from '../../validate/loginFormSchema.js'
-import withMainPageRedirect from '../../hocs/withMainPageRedirect.js'
-import { useAppDispatch, useAppSelector } from '../../hooks/react-redux-hooks.ts'
-import { login } from '../../redux/authSlice.ts'
+import withMainPageRedirect from '../../helpers/hocs/withMainPageRedirect.js'
+import { useAppDispatch, useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
+import { useSetLoginDataMutation } from '../../redux/services/authApi.ts'
+import { authorized } from '../../redux/slices/authSlice.ts'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function Login() {
+	const navigate = useNavigate()
+	const location = useLocation()
+	const fromPage = location.state ? location.state.pathname : '/'
+
 	const captchaUrl = useAppSelector(state => state.auth.captchaUrl)
 	const dispatch = useAppDispatch()
+
+	const [login] = useSetLoginDataMutation()
 
 	return (
 		<Formik
 			initialValues={{ email: '', password: '', rememberMe: false, captcha: '', globalError: '' }}
 			validationSchema={loginFormSchema}
-			onSubmit={(values, { setSubmitting, setErrors }) => {
-				dispatch(login({ ...values, setErrors }))
+			onSubmit={async (values, { setSubmitting, setErrors }) => {
+				const data = await login({ values, setErrors }).unwrap()
+				if (data) dispatch(authorized(data))
+				navigate(fromPage, { replace: true })
 				setSubmitting(false)
 			}}
 		>
@@ -56,4 +66,4 @@ function Login() {
 	)
 }
 
-export default withMainPageRedirect(Login)
+export default Login

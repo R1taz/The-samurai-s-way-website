@@ -1,19 +1,19 @@
-import userPhoto from '../assets/user.png'
+import userPhoto from '../../assets/user.png'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { InterlocutorType, MessagesInterlocutorType, SendMessageActionType } from '../interfaces'
+import { IInterlocutor, IDataUserMessage } from '../../interfaces'
 
-type MessagesStateType = {
-	interlocutor: InterlocutorType[]
-	messagesInterlocutors: MessagesInterlocutorType[]
+interface State {
+	interlocutors: IInterlocutor[]
+	interlocutorsMessages: IDataUserMessage[]
 }
 
-const initialState: MessagesStateType = {
-	interlocutor: [
+const initialState: State = {
+	interlocutors: [
 		{ id: 1, userName: 'User 1' },
 		{ id: 2, userName: 'User 2' },
 		{ id: 3, userName: 'User 3' },
 	],
-	messagesInterlocutors: [
+	interlocutorsMessages: [
 		{
 			id: 1,
 			userName: 'Bot1',
@@ -57,8 +57,8 @@ const messagesSlice = createSlice({
 	name: 'messages',
 	initialState,
 	reducers: {
-		sendMessage(state, action: PayloadAction<SendMessageActionType>) {
-			state.messagesInterlocutors.push({
+		sendMessage(state, action: PayloadAction<IDataUserMessage>) {
+			state.interlocutorsMessages.push({
 				id: action.payload.id,
 				userName: action.payload.userName,
 				urlPhoto: action.payload.urlPhoto,

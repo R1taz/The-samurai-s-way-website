@@ -1,14 +1,14 @@
 import React, { memo } from 'react'
 
-import { getUsers, changeCurrentPage } from '../../../redux/usersSlice.ts'
-import { usePaginator } from '../../../hooks/usePaginator.tsx'
-import { useAppDispatch } from '../../../hooks/react-redux-hooks.ts'
+import { changeCurrentPage } from '../../../redux/slices/usersSlice.ts'
+import { usePaginator } from '../../../helpers/hooks/usePaginator.tsx'
+import { useAppDispatch } from '../../../helpers/hooks/react-redux-hooks.ts'
 
-interface Props {
+interface PaginatorProps {
 	currentPage: number
 }
 
-const Paginator = memo(({ currentPage }: Props) => {
+const Paginator = memo(({ currentPage }: PaginatorProps) => {
 	const dispatch = useAppDispatch()
 	const paginator = usePaginator(currentPage)
 
@@ -19,7 +19,6 @@ const Paginator = memo(({ currentPage }: Props) => {
 					onClick={() => {
 						paginator.setCurrentPortion(paginator.currentPortion - 1)
 						dispatch(changeCurrentPage(paginator.leftNumberPage - paginator.pagesInPortionCount))
-						dispatch(getUsers(paginator.leftNumberPage - paginator.pagesInPortionCount))
 					}}
 				>
 					Previous
@@ -33,7 +32,6 @@ const Paginator = memo(({ currentPage }: Props) => {
 					onClick={() => {
 						paginator.setCurrentPortion(paginator.currentPortion + 1)
 						dispatch(changeCurrentPage(paginator.rightNumberPage + 1))
-						dispatch(getUsers(paginator.rightNumberPage + 1))
 					}}
 				>
 					Next
