@@ -1,7 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import loginFormSchema from '../../validate/loginFormSchema.js'
-import withMainPageRedirect from '../../helpers/hocs/withMainPageRedirect.js'
 import { useAppDispatch, useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
 import { useSetLoginDataMutation } from '../../redux/services/authApi.ts'
 import { authorized } from '../../redux/slices/authSlice.ts'

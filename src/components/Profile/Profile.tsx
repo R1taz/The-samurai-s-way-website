@@ -1,6 +1,7 @@
 import React from 'react'
 import ProfileInfo from './ProfileInfo/ProfileInfo.tsx'
 import Posts from './Posts/Posts.tsx'
+
 import { useAppDispatch, useAppSelector } from '../../helpers/hooks/react-redux-hooks.ts'
 import { useParams } from 'react-router-dom'
 import { useGetProfileQuery } from '../../redux/services/profileApi.ts'
@@ -8,13 +9,13 @@ import { getUserProfile } from '../../redux/slices/profileSlice.ts'
 import useRedirect from '../../helpers/hooks/useRedirect.tsx'
 
 const Profile = () => {
-	const { urlId } = useParams()
+	const { id } = useParams()
 
 	const profile = useAppSelector(state => state.profilePage.profile)
 	const profileId = useAppSelector(state => state.auth.id)
 	const dispatch = useAppDispatch()
 
-	const userId = urlId ? Number(urlId) : profileId!
+	const userId = id ? Number(id) : profileId!
 
 	const { data: dataProfile } = useGetProfileQuery(userId)
 	if (dataProfile && JSON.stringify(dataProfile) !== JSON.stringify(profile)) {
@@ -28,7 +29,7 @@ const Profile = () => {
 
 	return (
 		<div>
-			<ProfileInfo userId={userId} isOwner={!urlId} profile={profile} />
+			<ProfileInfo userId={userId} isOwner={!id} profile={profile} />
 			<Posts />
 		</div>
 	)
